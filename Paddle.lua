@@ -17,6 +17,7 @@ function Paddle.create()
 end
 
 function Paddle:draw()
+    love.graphics.setColor(255, 255, 255)
     love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
 end
 

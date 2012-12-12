@@ -49,6 +49,15 @@ function Ball:update(paddle)
             self.xdir = math.abs(self.xdir) * -1;
         end
     end
+
+    -- check if ball collides with brick
+    for i,rows in ipairs(Bricks) do
+        for j, brick in ipairs(rows) do
+            if(self:checkCollision(brick)) then
+                brick.visible = false
+            end
+        end
+    end
 end
 
 function Ball:resetBall()
@@ -71,6 +80,10 @@ function Ball:checkCollision(paddle)
 
     return self.x < paddle_x2 and ball_x2 > paddle.x and
         self.y < paddle_y2 and ball_y2 > paddle.y
+end
+
+function Ball:checkCollision(brick)
+
 end
 
 return Ball

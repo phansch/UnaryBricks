@@ -1,17 +1,23 @@
 
 
-local Brick = { x, y, width, height, color }
+local Brick = { x, y, width, height, {r, g, b, a} }
 Brick.__index = Brick
 
-function Brick.create(x, y, width, height, color)
+function Brick.create(x, y, width, height, r, g, b)
     brick = {}
     setmetatable(brick, Brick)
     brick.x = x
     brick.y = y
     brick.width = width
     brick.height = height
-    brick.color = color
+    brick.color = {r, g, b}
+    brick.visible = true
     return brick
 end
+
+function Brick:update()
+
+end
+
 return Brick
 

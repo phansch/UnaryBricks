@@ -1,14 +1,19 @@
---local Level = require 'Level'
+local Level = require 'Level'
 local Paddle = require 'Paddle'
 local Ball = require 'Ball'
 --local Game = require 'Game'
 
 local paddle = Paddle.create()
 local ball = Ball.create()
+local level = Level.create()
+function love.load()
+    level:setup()
+end
 
 function love.draw()
     paddle:draw()
     ball:draw()
+    level:draw()
 end
 
 function love.update()
