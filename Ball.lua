@@ -17,7 +17,7 @@ function Ball:draw()
     love.graphics.rectangle("fill", self.x, self.y, self.size, self.size)
 end
 
-function Ball:update(paddle)
+function Ball:update(paddle, level)
     self.x = self.x + self.xdir * Game.dt * speed
     self.y = self.y + self.ydir * Game.dt * speed
 
@@ -53,8 +53,9 @@ function Ball:update(paddle)
     -- check if ball collides with brick
     for i,rows in ipairs(Bricks) do
         for j, brick in ipairs(rows) do
-            if(self:checkCollision(brick)) then
+            if(self:checkCollision(brick) and brick.visible) then
                 brick.visible = false
+                self.ydir = 1
             end
         end
     end
@@ -83,7 +84,13 @@ function Ball:checkCollision(paddle)
 end
 
 function Ball:checkCollision(brick)
+    local ball_x2 = self.x + self.size
+    local ball_y2 = self.y + self.size
+    local brick_x2 = brick.x + brick.width
+    local brick_y2 = brick.y + brick.height
 
+    return self.x < brick_x2 and ball_x2 > brick.x and
+        self.y < brick_y2 and ball_y2 > brick.y
 end
 
 return Ball

@@ -17,7 +17,7 @@ function love.draw()
 end
 
 function love.update()
-    ball:update(paddle)
+    ball:update(paddle, level)
 
     if love.keyboard.isDown("a") then
         paddle:update(-1) -- move paddle left

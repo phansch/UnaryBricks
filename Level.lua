@@ -1,7 +1,7 @@
 local Game = require 'Game'
 local Brick = require 'Brick'
 local Level = {}
-local Bricks = {}
+Bricks = {}
 Level.__index = Level
 
 function Level.create()
