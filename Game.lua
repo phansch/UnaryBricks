@@ -1,3 +1,4 @@
+-- game stats
 Game = {}
 Game.width = love.graphics.getWidth()
 Game.height = love.graphics.getHeight()
