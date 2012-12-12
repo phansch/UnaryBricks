@@ -55,7 +55,18 @@ function Ball:update(paddle, level)
         for j, brick in ipairs(rows) do
             if(self:checkCollision(brick) and brick.visible) then
                 brick.visible = false
-                self.ydir = 1
+
+                -- Detect the side that was hit and reflect the ball appropriately
+                if(self.y >= (brick.y + brick.height/2)) then
+                    self.ydir = 1
+                elseif(self.y <= brick.y) then
+                    self.ydir = -1
+                elseif(self.x < brick.x) then
+                    self.xdir = -1
+                elseif(self.x > brick.x) then
+                    self.xdir = 1
+                end
+
             end
         end
     end
