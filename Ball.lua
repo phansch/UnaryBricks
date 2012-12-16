@@ -39,7 +39,6 @@ function Ball:update(paddle, level)
 
     -- check if ball collides with paddle
     if(self:checkCollision(paddle)) then
-        print('paddle.x: ' .. paddle.width .. '; self.x: ' .. self.x)
 
         self.ydir = self.ydir * -1
 
@@ -54,19 +53,23 @@ function Ball:update(paddle, level)
     for i,rows in ipairs(Bricks) do
         for j, brick in ipairs(rows) do
             if(self:checkCollision(brick) and brick.visible) then
-                brick.visible = false
+
 
                 -- Detect the side that was hit and reflect the ball appropriately
-                if(self.y >= (brick.y + brick.height/2)) then
-                    self.ydir = 1
-                elseif(self.y <= brick.y) then
-                    self.ydir = -1
-                elseif(self.x < brick.x) then
-                    self.xdir = -1
+                if(self.y >= (brick.y + brick.height)) then
+                    self.ydir = 1 -- from below
+                    print("from below")
+                elseif((self.y+self.size) <= brick.y+5) then
+                    self.ydir = -1 -- from above
+                    print("from above")
+                elseif((self.x + self.size) <= brick.x + 5) then
+                    self.xdir = -1 -- from left (something not perfect here)
+                    print("from left" .. self.x .. " " .. brick.x)
                 elseif(self.x > brick.x) then
-                    self.xdir = 1
+                    self.xdir = 1 -- from right
+                    print("from right")
                 end
-
+                brick.visible = false
             end
         end
     end

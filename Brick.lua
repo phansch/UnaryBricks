@@ -4,7 +4,7 @@ local Brick = { x, y, width, height, {r, g, b, a} }
 Brick.__index = Brick
 
 function Brick.create(x, y, width, height, r, g, b)
-    brick = {}
+    local brick = {}
     setmetatable(brick, Brick)
     brick.x = x
     brick.y = y
