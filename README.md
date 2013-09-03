@@ -1,4 +1,4 @@
-BinaryPaddle
+Unary Bricks
 ============
 
 A breakout clone made in [Love2D](https://love2d.org) (LÖVE)
