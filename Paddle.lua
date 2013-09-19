@@ -1,18 +1,14 @@
-local Game = require 'Game'
-local Paddle = { x, y, width }
+local Paddle = {}
 Paddle.__index = Paddle
 
-local height
-local speed = 20
-
-
-function Paddle.create()
+function Paddle.create(game)
     local paddle = {}
     setmetatable(paddle, Paddle)
-    paddle.x = Game.width / 2
-    paddle.y = Game.height - 30
+    paddle.x = game.width / 2
+    paddle.y = game.height - 30
     paddle.width = 100
     paddle.height = 20
+    paddle.speed = 300
     return paddle
 end
 
@@ -21,8 +17,8 @@ function Paddle:draw()
     love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
 end
 
-function Paddle:update(dir)
-    local moveX = self.x + dir * Game.dt * speed
+function Paddle:update(dir, game)
+    local moveX = self.x + dir * game.dt * self.speed
 
     --bounds checking
     if(moveX < love.graphics.getWidth()-self.width-5 and moveX > 5) then

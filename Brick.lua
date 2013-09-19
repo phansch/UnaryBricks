@@ -1,4 +1,4 @@
-
+-- Brick data structure
 
 local Brick = { x, y, width, height, {r, g, b, a} }
 Brick.__index = Brick
@@ -13,10 +13,6 @@ function Brick.create(x, y, width, height, r, g, b)
     brick.color = {r, g, b}
     brick.visible = true
     return brick
-end
-
-function Brick:update()
-
 end
 
 return Brick

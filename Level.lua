@@ -27,7 +27,7 @@ end
 
 function Level:setup()
     for i=1,10 do
-        Bricks[i] = {}     -- create a new row
+        Bricks[i] = {} -- create a new row
         for j=1,10 do
             x = 10 + i * 45
             y = 10 + j * 20

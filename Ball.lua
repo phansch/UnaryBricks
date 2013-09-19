@@ -1,15 +1,13 @@
 local Ball = {x, y, size}
 Ball.__index = Ball
 
-local speed = 15
-
 function Ball.create()
     local ball = {}
     setmetatable(ball, Ball)
     ball.size = 12
+    ball.speed = 200
     Ball:resetBall()
 
-    math.randomseed(os.time())
     return ball
 end
 
@@ -17,9 +15,9 @@ function Ball:draw()
     love.graphics.rectangle("fill", self.x, self.y, self.size, self.size)
 end
 
-function Ball:update(paddle, level)
-    self.x = self.x + self.xdir * Game.dt * speed
-    self.y = self.y + self.ydir * Game.dt * speed
+function Ball:update(paddle, game, dt)
+    self.x = self.x + self.xdir * dt * self.speed
+    self.y = self.y + self.ydir * dt * self.speed
 
     -- ball collides with top, left or right
     if(self.y <= 0) then
@@ -32,9 +30,10 @@ function Ball:update(paddle, level)
         self.xdir = -1
     end
 
-    -- if y > height -> round over
+    -- if self.y > winheight then substract life and reset ball
     if(self.y >= love.graphics.getHeight()) then
-        -- one life less
+        game.lifes = game.lifes - 1
+        self:resetBall()
     end
 
     -- check if ball collides with paddle
@@ -49,27 +48,25 @@ function Ball:update(paddle, level)
         end
     end
 
-    -- check if ball collides with brick
+
     for i,rows in ipairs(Bricks) do
         for j, brick in ipairs(rows) do
-            if(self:checkCollision(brick) and brick.visible) then
 
+            -- check if ball collides with brick
+            if(self:checkCollision(brick) and brick.visible) then
 
                 -- Detect the side that was hit and reflect the ball appropriately
                 if(self.y >= (brick.y + brick.height)) then
                     self.ydir = 1 -- from below
-                    print("from below")
                 elseif((self.y+self.size) <= brick.y+5) then
                     self.ydir = -1 -- from above
-                    print("from above")
                 elseif((self.x + self.size) <= brick.x + 5) then
                     self.xdir = -1 -- from left (something not perfect here)
-                    print("from left" .. self.x .. " " .. brick.x)
                 elseif(self.x > brick.x) then
                     self.xdir = 1 -- from right
-                    print("from right")
                 end
                 brick.visible = false
+                game.bricksHit = game.bricksHit + 1
             end
         end
     end
@@ -81,10 +78,12 @@ function Ball:resetBall()
     self.y = love.graphics.getHeight() / 2
 
     --set random direction for x
+    math.randomseed(os.time())
     self.xdir = math.random() >= 0.5 and 1 or -1
     self.ydir = 1 --move down always
 end
 
+-- Ball <-> Paddle collision check
 function Ball:checkCollision(paddle)
     -- Simple bounding box collision check
     -- source: https://love2d.org/wiki/BoundingBox.lua
@@ -97,6 +96,7 @@ function Ball:checkCollision(paddle)
         self.y < paddle_y2 and ball_y2 > paddle.y
 end
 
+-- Ball <-> Brick collision check
 function Ball:checkCollision(brick)
     local ball_x2 = self.x + self.size
     local ball_y2 = self.y + self.size
